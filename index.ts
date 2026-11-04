@@ -6,7 +6,18 @@ import employeeRoutes from "./src/routes/employee.routes"
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [
+  "https://sumitomo-frontend1.vercel.app",
+  "http://localhost:5173",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      callback(null, !origin || allowedOrigins.includes(origin));
+    },
+  })
+);
 app.use("/api", employeeRoutes);
 
 const port = Number(process.env.PORT) || 3000;
